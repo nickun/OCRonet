@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{64B21926-DF96-4E13-B727-D46ED5B6811C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ocronet.Dynamic</RootNamespace>
+    <AssemblyName>Ocronet.Dynamic</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Binarize\BinarizeByOtsu.cs" />
+    <Compile Include="Binarize\BinarizeByRange.cs" />
+    <Compile Include="Binarize\BinarizeBySauvola.cs" />
+    <Compile Include="Component\ComponentContainer.cs" />
+    <Compile Include="Component\ComponentCreator.cs" />
+    <Compile Include="Component\ComponentIO.cs" />
+    <Compile Include="Component\Init.cs" />
+    <Compile Include="Debug\NarrayShow.cs" />
+    <Compile Include="DRandomizer.cs" />
+    <Compile Include="Grouper\GrouperRoutine.cs" />
+    <Compile Include="Grouper\SimpleGrouper.cs" />
+    <Compile Include="ImgLib\BrushFire.cs" />
+    <Compile Include="ImgLib\Gauss.cs" />
+    <Compile Include="ImgLib\ImgIo.cs" />
+    <Compile Include="ImgLib\ImgLabels.cs" />
+    <Compile Include="ImgLib\ImgOps.cs" />
+    <Compile Include="ImgLib\ImgRoutine.cs" />
+    <Compile Include="ImgLib\Metric.cs" />
+    <Compile Include="ImgLib\ImgMisc.cs" />
+    <Compile Include="ImgLib\Morph.cs" />
+    <Compile Include="ImgLib\Skeleton.cs" />
+    <Compile Include="ImgLib\UnionFind.cs" />
+    <Compile Include="Interfaces\IBinarize.cs" />
+    <Compile Include="Interfaces\IBookStore.cs" />
+    <Compile Include="Interfaces\ICleanupBinary.cs" />
+    <Compile Include="Interfaces\ICleanupGray.cs" />
+    <Compile Include="Interfaces\IDpSegmenter.cs" />
+    <Compile Include="IOData\BinIO.cs" />
+    <Compile Include="IOData\BitDataset.cs" />
+    <Compile Include="IOData\ComponentIOWrapper.cs" />
+    <Compile Include="IOData\ComponentListIOWrapper.cs" />
+    <Compile Include="IOData\Dataset8.cs" />
+    <Compile Include="IOData\Datasubset.cs" />
+    <Compile Include="IOData\IOWrapper.cs" />
+    <Compile Include="IOData\MappedDataset.cs" />
+    <Compile Include="IOData\MnistDatasetConvert.cs" />
+    <Compile Include="IOData\MnistDatasource.cs" />
+    <Compile Include="IOData\NarrayIOWrapper.cs" />
+    <Compile Include="IOData\RaggedDatasetFloat8.cs" />
+    <Compile Include="IOData\RowDataset8.cs" />
+    <Compile Include="IOData\ScalarIOWrapper.cs" />
+    <Compile Include="Recognizers\Lenet\AutoLenetWrapper.cs" />
+    <Compile Include="Recognizers\TrainEvent.cs" />
+    <Compile Include="Tests\TestDataset.cs" />
+    <Compile Include="IOData\TranslatedDataset.cs" />
+    <Compile Include="OcroFST\BeamSearch.cs" />
+    <Compile Include="OcroFST\FstIO.cs" />
+    <Compile Include="OcroFST\PriorityQueue.cs" />
+    <Compile Include="OcroFST\SearchTree.cs" />
+    <Compile Include="Recognizers\AutoMlpClassifier.cs" />
+    <Compile Include="Recognizers\BiggestCcExtractor.cs" />
+    <Compile Include="Recognizers\Candidate.cs" />
+    <Compile Include="Recognizers\ClassifierUtil.cs" />
+    <Compile Include="Recognizers\ComponentContainerExtractor.cs" />
+    <Compile Include="Recognizers\ComponentContainerIGrouper.cs" />
+    <Compile Include="Recognizers\ComponentContainerIModel.cs" />
+    <Compile Include="Recognizers\ComponentContainerISegmentLine.cs" />
+    <Compile Include="Recognizers\ExtractedDataset.cs" />
+    <Compile Include="IOData\IDataset.cs" />
+    <Compile Include="IOData\IExtDataset.cs" />
+    <Compile Include="Recognizers\IBatch.cs" />
+    <Compile Include="Recognizers\IBatchDense.cs" />
+    <Compile Include="Recognizers\IExtractor.cs" />
+    <Compile Include="Interfaces\IGenericFst.cs" />
+    <Compile Include="Interfaces\IGrouper.cs" />
+    <Compile Include="Recognizers\IModel.cs" />
+    <Compile Include="Interfaces\IRecognizeLine.cs" />
+    <Compile Include="Interfaces\ISegmentLine.cs" />
+    <Compile Include="Interfaces\ISegmentPage.cs" />
+    <Compile Include="Interfaces\ITextImageClassification.cs" />
+    <Compile Include="Segmentation\Line\CurvedCutSegmenter.cs" />
+    <Compile Include="Segmentation\Line\CurvedCutWithCcSegmenter.cs" />
+    <Compile Include="Segmentation\Line\DpSegmenter.cs" />
+    <Compile Include="Segmentation\Line\SegmentLineByCCS.cs" />
+    <Compile Include="Segmentation\Line\SegmentLineByGCCS.cs" />
+    <Compile Include="Segmentation\SegmRoutine.cs" />
+    <Compile Include="Segmentation\Line\CurvedCutSegmentLine.cs" />
+    <Compile Include="Segmentation\Line\CurvedCutSegmenterImpl.cs" />
+    <Compile Include="Interfaces\ICurvedCutSegmenter.cs" />
+    <Compile Include="Segmentation\Line\SkelSegmenter.cs" />
+    <Compile Include="NarrayRowUtil.cs" />
+    <Compile Include="NarrayUtil.cs" />
+    <Compile Include="ObjList.cs" />
+    <Compile Include="OcroFST\AStarCompositionSearch.cs" />
+    <Compile Include="OcroFST\AStarSearch.cs" />
+    <Compile Include="OcroFST\AStarUtil.cs" />
+    <Compile Include="OcroFST\CompositionFst.cs" />
+    <Compile Include="OcroFST\CompositionFstImpl.cs" />
+    <Compile Include="OcroFST\FstFactory.cs" />
+    <Compile Include="OcroFST\FstUtil.cs" />
+    <Compile Include="OcroFST\Heap.cs" />
+    <Compile Include="OcroFST\OcroFST.cs" />
+    <Compile Include="OcroFST\OcroFSTImpl.cs" />
+    <Compile Include="OcroFST\ReadOnlyFst.cs" />
+    <Compile Include="Recognizers\ISpaceModel.cs" />
+    <Compile Include="Recognizers\LatinClassifier.cs" />
+    <Compile Include="Recognizers\Lenet\LenetClassifier.cs" />
+    <Compile Include="StdInput.cs" />
+    <Compile Include="Recognizers\Lenet\LenetIOWrapper.cs" />
+    <Compile Include="Recognizers\Lenet\LenetRoutines.cs" />
+    <Compile Include="Recognizers\Lenet\LenetWrapper.cs" />
+    <Compile Include="Tests\TestLenetClassifier.cs" />
+    <Compile Include="Tests\TestLenetWrapper.cs" />
+    <Compile Include="Recognizers\Linerec.cs" />
+    <Compile Include="Recognizers\LineRecognizer.cs" />
+    <Compile Include="Recognizers\MlpClassifier.cs" />
+    <Compile Include="Recognizers\NBest.cs" />
+    <Compile Include="Recognizers\OutputVector.cs" />
+    <Compile Include="Recognizers\RaveledExtractor.cs" />
+    <Compile Include="Recognizers\ScaledImageExtractor.cs" />
+    <Compile Include="Recognizers\SimpleSpaceModel.cs" />
+    <Compile Include="Recognizers\StandardExtractor.cs" />
+    <Compile Include="Rect.cs" />
+    <Compile Include="Tests\TestLinerec.cs" />
+    <Compile Include="Utils\BookLine.cs" />
+    <Compile Include="Utils\BookStore.cs" />
+    <Compile Include="Utils\DirPattern.cs" />
+    <Compile Include="Utils\Global.cs" />
+    <Compile Include="Interfaces\IComponent.cs" />
+    <Compile Include="Narray.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\LineSource.cs" />
+    <Compile Include="Utils\Logger.cs" />
+    <Compile Include="Utils\OcrRoutine.cs" />
+    <Compile Include="Utils\OldBookStore.cs" />
+    <Compile Include="Utils\Parallel.cs" />
+    <Compile Include="Utils\SmartBookStore.cs" />
+    <Compile Include="Tests\TestBookStore.cs" />
+    <Compile Include="Utils\UiHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ConvClassifier.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ascii-targets4.mat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Segmentation\Page\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,357 @@
+﻿<Page x:Class="DynamicVizSegmenter.PageSegmenter"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:src="clr-namespace:DynamicVizSegmenter" xmlns:dynutils="clr-namespace:Ocronet.Dynamic.Utils;assembly=Ocronet.Dynamic"
+      xmlns:CustomControls="clr-namespace:DynamicVizSegmenter.CustomControls" mc:Ignorable="d" 
+      d:DesignHeight="400" d:DesignWidth="680"
+	Title="Page Segmenter">
+    <Page.Resources>
+        <!-- Converter from Bitmap to ImageSource -->
+        <src:BitmapToImageSourceConverter x:Key="bitmapToImageSourceConverter" />
+        
+        <!-- SolidColorBrush -->
+        <SolidColorBrush x:Key="MainBorderBrushKey">LightSkyBlue</SolidColorBrush>
+        <SolidColorBrush x:Key="CharsegBorderBrushKey" Color="Orange"></SolidColorBrush>
+        <SolidColorBrush x:Key="CharsegBorderBrushKey2" Color="#33FFA500"></SolidColorBrush>
+        <SolidColorBrush x:Key="TranscriptBorderBrushKey" Color="MediumSeaGreen"></SolidColorBrush>
+        <SolidColorBrush x:Key="PageLabelBrushKey">#55CCCCFF</SolidColorBrush>
+        <SolidColorBrush x:Key="LabelCaptionBrushKey">#CCFFFACD</SolidColorBrush>
+        
+        <!-- Style -->
+        <Style x:Key="TitleBorder" TargetType="{x:Type Border}">
+            <Setter Property="BorderThickness" Value="1,1,1,0" />
+            <Setter Property="BorderBrush" Value="{StaticResource MainBorderBrushKey}" />
+            <Setter Property="Background" Value="{StaticResource PageLabelBrushKey}" />
+            <Setter Property="CornerRadius" Value="5,5,0,0" />
+        </Style>
+        <Style x:Key="TitleText" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="SegmentationBorder" TargetType="{x:Type Border}">
+            <!--<Setter Property="Margin" Value="3"/>-->
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{StaticResource CharsegBorderBrushKey}" />
+        </Style>
+        <Style x:Key="TranscriptBorder" TargetType="{x:Type Border}">
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="{StaticResource TranscriptBorderBrushKey}" />
+        </Style>
+
+        <Style x:Key="bookLineListBox" TargetType="{x:Type ListBox}" >
+            <Setter Property="ItemTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Border Name="_item">
+                            <TextBlock Text="{Binding}" />
+                        </Border>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=HaveCharseg}" Value="True">
+                                <Setter Property="Background" Value="{StaticResource CharsegBorderBrushKey2}" TargetName="_item" />
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="groupingHeaderTemplate" TargetType="{x:Type GroupItem}">
+            <Setter Property="Margin" Value="0,0,0,5" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                        <Expander Name="expanderHeader"
+                                  IsExpanded="False"
+                                  BorderBrush="#FFA4B97F"
+                                  BorderThickness="0,0,0,1">
+                            <Expander.Header>
+                                <DockPanel>
+                                    <TextBlock Name="groupHeaderText"
+                                               FontWeight="Bold"
+                                               Text="Present Charseg" />
+                                </DockPanel>
+                            </Expander.Header>
+                            <Expander.Content>
+                                <ItemsPresenter />
+                            </Expander.Content>
+                        </Expander>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=Name}" Value="False">
+                                <Setter Property="Text" Value="No Charseg" TargetName="groupHeaderText" />
+                                <Setter Property="IsExpanded" Value="True" TargetName="expanderHeader" />
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <!-- Template for ListBox grouping -->
+        <DataTemplate x:Key="groupingHeaderTemplate2">
+            <TextBlock Name="groupText" Foreground="Navy" FontWeight="Bold" FontSize="12" Text="" />
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=Name}" Value="False">
+                    <Setter Property="Text" Value="Missing CharSeg" TargetName="groupText" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        
+        <!-- Template for ContentControl -->
+        <DataTemplate x:Key="detailsLineSourceTemplate" DataType="{x:Type dynutils:BookLine}">
+            <DataTemplate.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Margin" Value="8,0,0,0"/>
+                </Style>
+            </DataTemplate.Resources>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock Foreground="{StaticResource MainBorderBrushKey}">Исходный</TextBlock>
+                    <TextBlock Foreground="{StaticResource MainBorderBrushKey}" Text="Book:" />
+                    <TextBlock Foreground="{StaticResource MainBorderBrushKey}" Text="{Binding Bookno}" />
+                    <TextBlock Foreground="{StaticResource MainBorderBrushKey}" Text="Page:" />
+                    <TextBlock Foreground="{StaticResource MainBorderBrushKey}" Text="{Binding Pageno}"/>
+                    <TextBlock Foreground="{StaticResource MainBorderBrushKey}" Text="Line:" />
+                    <TextBlock Foreground="{StaticResource MainBorderBrushKey}" Text="{Binding Lineno}"/>
+                    <TextBlock Text="Have Transcript!" Name="haveTranscript" Foreground="{StaticResource TranscriptBorderBrushKey}" Visibility="Hidden" />
+                    <TextBlock Text="Have Charseg!" Name="haveCharseg" Foreground="{StaticResource CharsegBorderBrushKey}" Visibility="Hidden" />
+                </StackPanel>
+                <Border Grid.Row="1" Margin="3,3,3,3" BorderBrush="{StaticResource MainBorderBrushKey}" BorderThickness="1">
+                    <Image Source="{Binding Path=Image, Converter={StaticResource bitmapToImageSourceConverter}}"
+                           MinHeight="50" MaxHeight="75" />
+                </Border>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=HaveCharseg}" Value="True">
+                    <Setter TargetName="haveCharseg" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=HaveTranscript}" Value="True">
+                    <Setter TargetName="haveTranscript" Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </Page.Resources>
+    
+    <!-- Page content -->
+    <Grid Margin="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="24" />
+            <RowDefinition Height="100*" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="50*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Style="{StaticResource TitleBorder}" >
+                <TextBlock Name="txtTitle" Text="Сегментация изображений" Style="{StaticResource TitleText}" Padding="5,0" />
+            </Border>
+        </Grid>
+        <Border Grid.Row="1" BorderBrush="{StaticResource MainBorderBrushKey}" Background="{StaticResource PageLabelBrushKey}" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="135" />
+                    <ColumnDefinition Width="150*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="118*" />
+                </Grid.RowDefinitions>
+                
+                <TextBlock Text="Путь к BookStore:" Padding="5,2" Background="{StaticResource LabelCaptionBrushKey}" FontStyle="Italic" />
+                <TextBox Grid.Column="1" Name="tbBookPath" Margin="3,1" LostKeyboardFocus="ReloadBookPath" KeyUp="tbBookPath_KeyUp" Text=" data" />
+                <Button 
+                    Grid.Column="2"
+                    Name="btReloadBookStore"
+                    CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/refresh16.png"
+                    Style="{StaticResource ImageButton}"
+                    Click="ReloadBookPath"
+                    Content="…" Width="24" Height="24" Margin="0,1,3,1" />
+
+                <DockPanel Grid.Row="1" Grid.RowSpan="4">
+                    <ToolBar Name="toolBar1" DockPanel.Dock="Top" HorizontalAlignment="Stretch" >
+                        <ToolBar.Resources>
+                            <Style x:Key="toolbarButton" TargetType="{x:Type ButtonBase}">
+                                <Setter Property="Width" Value="24" />
+                                <Setter Property="Height" Value="24" />
+                            </Style>
+                        </ToolBar.Resources>
+                        <ToggleButton
+                            Style="{StaticResource toolbarButton}"
+                            Name="btnGroupByHaveCharseg"
+                            Click="GroupByHaveCharseg_Checked"
+                            ToolTip="Group by &quot;HaveCharseg&quot;"
+                            Height="22" Width="22">
+                            <ToggleButton.Background>
+                                <ImageBrush ImageSource="/DynamicVizSegmenter;component/Images/tb-group24.png" />
+                            </ToggleButton.Background>
+                        </ToggleButton>
+                        <Button
+                            CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/folder-add24.png"
+                            Style="{StaticResource ImageButton}"
+                            Name="btnAddItemsToBase"
+                            Click="AddItemsToBase_Click"
+                            Tag="0"
+                            ToolTip="Add items to BookStore"
+                            Height="22" Width="22">
+                        </Button>
+                        <Button
+                            CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/folder-add-text24.png"
+                            Style="{StaticResource ImageButton}"
+                            Name="btnAddTextItemsToBase"
+                            Click="AddItemsToBase_Click"
+                            Tag="1"
+                            ToolTip="Add items and text from filename to BookStore"
+                            Height="22" Width="22">
+                        </Button>
+                        <Button
+                            CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/folder-info24.png"
+                            Style="{StaticResource ImageButton}"
+                            Name="btnBooksInfoWindow"
+                            Click="ShowBooksInfo_Click"
+                            Tag="1"
+                            ToolTip="Show information of BookStore"
+                            Height="22" Width="22">
+                        </Button>
+                    </ToolBar>
+                    <ListBox 
+                        Name="listBooksLine"
+                        ItemsSource="{Binding}"
+                        Style="{StaticResource bookLineListBox}"
+                        IsSynchronizedWithCurrentItem="True"
+                        DockPanel.Dock="Bottom" Focusable="False" HorizontalContentAlignment="Stretch">
+                        <ListBox.GroupStyle>
+                            <GroupStyle ContainerStyle="{StaticResource groupingHeaderTemplate}" />
+                        </ListBox.GroupStyle>
+                    </ListBox>
+                </DockPanel>
+                
+                <ContentControl
+                    Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"
+                    Name="bookItemDetail"
+                    Content="{Binding}"
+                    ContentTemplate="{StaticResource detailsLineSourceTemplate}" />
+
+                <DockPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
+                    <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock Foreground="{StaticResource TranscriptBorderBrushKey}" Margin="8,0" VerticalAlignment="Bottom">
+                            <Run>Transcript</Run>
+                        </TextBlock>
+                        <TextBlock Margin="5,0" Foreground="{StaticResource TranscriptBorderBrushKey}" VerticalAlignment="Bottom">
+                            <TextBlock.Text>
+                                <Binding StringFormat="[{0}]" Path="Transcript.Length" />
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <Button
+                            Name="btSaveTranscript"
+                            CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/filesave16.png"
+                            Click="PutTranscriptToBookLine"
+                            Style="{DynamicResource ImageButton}"
+                            Width="22" Height="20"
+                            Margin="2,5,2,0" ToolTip="Сохранить транскрипт в базу" />
+                    </WrapPanel>
+                    <Border Style="{StaticResource TranscriptBorder}">
+                        <TextBox Name="tbTranscript" TextWrapping="Wrap" />
+                    </Border>
+                </DockPanel>
+
+                <GroupBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
+                          Header="Сегментация" Foreground="{StaticResource CharsegBorderBrushKey}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <WrapPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,4">
+                            <TextBlock Margin="5,0" VerticalAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="[{0} x {1}]">
+                                        <Binding Path="CharsegImageHeight"/>
+                                        <Binding Path="CharsegImageWidth"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <Button
+                                CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/arrow-split16.png"
+                                Click="ProcessSegmentationMethod"
+                                Style="{DynamicResource ImageButton}"
+                                Height="22"
+                                Margin="2,5,2,0"
+                                ToolTip="Сегментировать методом DpSegmenter"
+                                Content="DpSegmenter"
+                                Tag="DpSegmenter" FontSize="11" />
+                            <Button
+                                CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/arrow-split16.png"
+                                Click="ProcessSegmentationMethod"
+                                Style="{DynamicResource ImageButton}"
+                                Height="22"
+                                Margin="2,5,2,0"
+                                ToolTip="Сегментировать методом SegmentLineByCCS"
+                                Content="SegmentLineByCCS"
+                                Tag="SegmentLineByCCS" FontSize="11" />
+                            <Button
+                                CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/arrow-split16.png"
+                                Click="ProcessSegmentationMethod"
+                                Style="{DynamicResource ImageButton}"
+                                Height="22"
+                                Margin="2,5,2,0"
+                                ToolTip="Сегментировать методом SegmentLineByGCCS"
+                                Content="SegmentLineByGCCS"
+                                Tag="SegmentLineByGCCS" FontSize="11" />
+                            <Button
+                                Name="btSaveCharseg"
+                                CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/filesave16.png"
+                                Click="PutCharsegToBookLine" Style="{DynamicResource ImageButton}"
+                                Width="22" Height="22"
+                                Margin="2,5,2,0" ToolTip="Сохранить сегментацию в базу" IsEnabled="False" />
+                        </WrapPanel>
+                        <Border Grid.Row="1" Style="{StaticResource SegmentationBorder}">
+                            <Image Name="imgCharSeg" MinHeight="50" MaxHeight="120" />
+                        </Border>
+                        <WrapPanel Grid.Row="2" Margin="0,2,0,0">
+                            <TextBlock Text="с" VerticalAlignment="Center" />
+                            <CustomControls:NumericUpDownTextBox
+                                x:Name="numUpDnStart" Height="30" Width="60" Margin="8,3" FontSize="12" HorizontalAlignment="Stretch"
+                                MinValue="1" MaxValue="100" Value="1" ValueChanged="numUpDnStart_ValueChanged" />
+                            <TextBlock Text="по" VerticalAlignment="Center" />
+                            <CustomControls:NumericUpDownTextBox
+                                x:Name="numUpDnEnd" Height="30" Width="60" Margin="8,3" FontSize="12" HorizontalAlignment="Stretch"
+                                MinValue="1" MaxValue="100" Value="1" ValueChanged="numUpDnEnd_ValueChanged" />
+                            <Button
+                                Name="btMergeSegments"
+                                CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/arrow-merge16.png"
+                                Click="ProcessMergeSegments"
+                                Style="{DynamicResource ImageButton}"
+                                Height="22"
+                                Margin="2"
+                                ToolTip="Объеденить заданные сегменты С и ПО"
+                                Content="Объеденить" FontSize="11" IsEnabled="False" />
+                            <Button
+                                Name="btDeleteSegment"
+                                CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/eraser16.png"
+                                Click="ProcessDeleteSegment"
+                                Style="{DynamicResource ImageButton}"
+                                Height="22"
+                                Margin="2"
+                                ToolTip="Удалить сегмент С по С"
+                                Content="Удалить С по С" FontSize="11" IsEnabled="False" />
+                        </WrapPanel>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>

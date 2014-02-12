@@ -1,0 +1,8 @@
+﻿<Window x:Class="DynamicVizSegmenter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Visual Segmenter" Height="522" Width="688" Icon="App.ico">
+    <Grid>
+        <Frame Margin="0,4,0,0" Name="framePages" Source="PageSegmenter.xaml" />
+    </Grid>
+</Window>
