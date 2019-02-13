@@ -1,11 +1,9 @@
-﻿using Ocronet.Dynamic;
+﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using Ocronet.Dynamic;
 
-namespace Ocronet.DynamicTest
+namespace Ocronet.DynamicUnitTest
 {
-    
-    
     /// <summary>
     ///This is a test class for NarrayTest and is intended
     ///to contain all NarrayTest Unit Tests

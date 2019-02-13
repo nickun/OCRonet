@@ -51,7 +51,7 @@
     <Compile Include="Component\ComponentCreator.cs" />
     <Compile Include="Component\ComponentIO.cs" />
     <Compile Include="Component\Init.cs" />
-    <Compile Include="Debug\NarrayShow.cs" />
+    <Compile Include="DebugUtils\NarrayShow.cs" />
     <Compile Include="DRandomizer.cs" />
     <Compile Include="Grouper\GrouperRoutine.cs" />
     <Compile Include="Grouper\SimpleGrouper.cs" />

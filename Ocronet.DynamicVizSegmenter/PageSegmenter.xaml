@@ -10,7 +10,7 @@
     <Page.Resources>
         <!-- Converter from Bitmap to ImageSource -->
         <src:BitmapToImageSourceConverter x:Key="bitmapToImageSourceConverter" />
-        
+
         <!-- SolidColorBrush -->
         <SolidColorBrush x:Key="MainBorderBrushKey">LightSkyBlue</SolidColorBrush>
         <SolidColorBrush x:Key="CharsegBorderBrushKey" Color="Orange"></SolidColorBrush>
@@ -18,7 +18,7 @@
         <SolidColorBrush x:Key="TranscriptBorderBrushKey" Color="MediumSeaGreen"></SolidColorBrush>
         <SolidColorBrush x:Key="PageLabelBrushKey">#55CCCCFF</SolidColorBrush>
         <SolidColorBrush x:Key="LabelCaptionBrushKey">#CCFFFACD</SolidColorBrush>
-        
+
         <!-- Style -->
         <Style x:Key="TitleBorder" TargetType="{x:Type Border}">
             <Setter Property="BorderThickness" Value="1,1,1,0" />
@@ -100,7 +100,7 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
-        
+
         <!-- Template for ContentControl -->
         <DataTemplate x:Key="detailsLineSourceTemplate" DataType="{x:Type dynutils:BookLine}">
             <DataTemplate.Resources>
@@ -114,7 +114,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <TextBlock Foreground="{StaticResource MainBorderBrushKey}">Исходный</TextBlock>
+                    <TextBlock Foreground="{StaticResource MainBorderBrushKey}">Source</TextBlock>
                     <TextBlock Foreground="{StaticResource MainBorderBrushKey}" Text="Book:" />
                     <TextBlock Foreground="{StaticResource MainBorderBrushKey}" Text="{Binding Bookno}" />
                     <TextBlock Foreground="{StaticResource MainBorderBrushKey}" Text="Page:" />
@@ -139,7 +139,7 @@
             </DataTemplate.Triggers>
         </DataTemplate>
     </Page.Resources>
-    
+
     <!-- Page content -->
     <Grid Margin="3">
         <Grid.RowDefinitions>
@@ -152,14 +152,15 @@
                 <ColumnDefinition Width="50*" />
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0" Style="{StaticResource TitleBorder}" >
-                <TextBlock Name="txtTitle" Text="Сегментация изображений" Style="{StaticResource TitleText}" Padding="5,0" />
+                <TextBlock Name="txtTitle" Text="Image segmentation" Style="{StaticResource TitleText}" Padding="5,0" />
             </Border>
         </Grid>
         <Border Grid.Row="1" BorderBrush="{StaticResource MainBorderBrushKey}" Background="{StaticResource PageLabelBrushKey}" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="135" />
-                    <ColumnDefinition Width="150*" />
+                    <ColumnDefinition Width="31*" />
+                    <ColumnDefinition Width="224*"/>
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -169,11 +170,11 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="118*" />
                 </Grid.RowDefinitions>
-                
-                <TextBlock Text="Путь к BookStore:" Padding="5,2" Background="{StaticResource LabelCaptionBrushKey}" FontStyle="Italic" />
-                <TextBox Grid.Column="1" Name="tbBookPath" Margin="3,1" LostKeyboardFocus="ReloadBookPath" KeyUp="tbBookPath_KeyUp" Text=" data" />
+
+                <TextBlock Text="Path to BookStore:" Padding="5,2" Background="{StaticResource LabelCaptionBrushKey}" FontStyle="Italic" />
+                <TextBox Grid.Column="1" Name="tbBookPath" Margin="3,1" LostKeyboardFocus="ReloadBookPath" KeyUp="tbBookPath_KeyUp" Text=" data" Grid.ColumnSpan="2" />
                 <Button 
-                    Grid.Column="2"
+                    Grid.Column="3"
                     Name="btReloadBookStore"
                     CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/refresh16.png"
                     Style="{StaticResource ImageButton}"
@@ -237,14 +238,14 @@
                         </ListBox.GroupStyle>
                     </ListBox>
                 </DockPanel>
-                
+
                 <ContentControl
-                    Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"
+                    Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3"
                     Name="bookItemDetail"
                     Content="{Binding}"
                     ContentTemplate="{StaticResource detailsLineSourceTemplate}" />
 
-                <DockPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
+                <DockPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3">
                     <WrapPanel DockPanel.Dock="Top" Orientation="Horizontal">
                         <TextBlock Foreground="{StaticResource TranscriptBorderBrushKey}" Margin="8,0" VerticalAlignment="Bottom">
                             <Run>Transcript</Run>
@@ -260,15 +261,15 @@
                             Click="PutTranscriptToBookLine"
                             Style="{DynamicResource ImageButton}"
                             Width="22" Height="20"
-                            Margin="2,5,2,0" ToolTip="Сохранить транскрипт в базу" />
+                            Margin="2,5,2,0" ToolTip="Save transcript into database" />
                     </WrapPanel>
                     <Border Style="{StaticResource TranscriptBorder}">
                         <TextBox Name="tbTranscript" TextWrapping="Wrap" />
                     </Border>
                 </DockPanel>
 
-                <GroupBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"
-                          Header="Сегментация" Foreground="{StaticResource CharsegBorderBrushKey}">
+                <GroupBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3"
+                          Header="Segmentation" Foreground="{StaticResource CharsegBorderBrushKey}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -290,7 +291,7 @@
                                 Style="{DynamicResource ImageButton}"
                                 Height="22"
                                 Margin="2,5,2,0"
-                                ToolTip="Сегментировать методом DpSegmenter"
+                                ToolTip="Segment using DpSegmenter"
                                 Content="DpSegmenter"
                                 Tag="DpSegmenter" FontSize="11" />
                             <Button
@@ -299,7 +300,7 @@
                                 Style="{DynamicResource ImageButton}"
                                 Height="22"
                                 Margin="2,5,2,0"
-                                ToolTip="Сегментировать методом SegmentLineByCCS"
+                                ToolTip="Segment using SegmentLineByCCS"
                                 Content="SegmentLineByCCS"
                                 Tag="SegmentLineByCCS" FontSize="11" />
                             <Button
@@ -308,7 +309,7 @@
                                 Style="{DynamicResource ImageButton}"
                                 Height="22"
                                 Margin="2,5,2,0"
-                                ToolTip="Сегментировать методом SegmentLineByGCCS"
+                                ToolTip="Segment using SegmentLineByGCCS"
                                 Content="SegmentLineByGCCS"
                                 Tag="SegmentLineByGCCS" FontSize="11" />
                             <Button
@@ -316,17 +317,17 @@
                                 CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/filesave16.png"
                                 Click="PutCharsegToBookLine" Style="{DynamicResource ImageButton}"
                                 Width="22" Height="22"
-                                Margin="2,5,2,0" ToolTip="Сохранить сегментацию в базу" IsEnabled="False" />
+                                Margin="2,5,2,0" ToolTip="Save segmentation in database" IsEnabled="False" />
                         </WrapPanel>
                         <Border Grid.Row="1" Style="{StaticResource SegmentationBorder}">
                             <Image Name="imgCharSeg" MinHeight="50" MaxHeight="120" />
                         </Border>
                         <WrapPanel Grid.Row="2" Margin="0,2,0,0">
-                            <TextBlock Text="с" VerticalAlignment="Center" />
+                            <TextBlock Text="from" VerticalAlignment="Center" />
                             <CustomControls:NumericUpDownTextBox
                                 x:Name="numUpDnStart" Height="30" Width="60" Margin="8,3" FontSize="12" HorizontalAlignment="Stretch"
                                 MinValue="1" MaxValue="100" Value="1" ValueChanged="numUpDnStart_ValueChanged" />
-                            <TextBlock Text="по" VerticalAlignment="Center" />
+                            <TextBlock Text="to" VerticalAlignment="Center" />
                             <CustomControls:NumericUpDownTextBox
                                 x:Name="numUpDnEnd" Height="30" Width="60" Margin="8,3" FontSize="12" HorizontalAlignment="Stretch"
                                 MinValue="1" MaxValue="100" Value="1" ValueChanged="numUpDnEnd_ValueChanged" />
@@ -337,8 +338,8 @@
                                 Style="{DynamicResource ImageButton}"
                                 Height="22"
                                 Margin="2"
-                                ToolTip="Объеденить заданные сегменты С и ПО"
-                                Content="Объеденить" FontSize="11" IsEnabled="False" />
+                                ToolTip="Combine specified segments between From and To"
+                                Content="Combine" FontSize="11" IsEnabled="False" />
                             <Button
                                 Name="btDeleteSegment"
                                 CustomControls:ImageSourceDep.Image="/DynamicVizSegmenter;component/Images/eraser16.png"
@@ -346,8 +347,8 @@
                                 Style="{DynamicResource ImageButton}"
                                 Height="22"
                                 Margin="2"
-                                ToolTip="Удалить сегмент С по С"
-                                Content="Удалить С по С" FontSize="11" IsEnabled="False" />
+                                ToolTip="Remove segment between From and From"
+                                Content="Remove From .. From" FontSize="11" IsEnabled="False" />
                         </WrapPanel>
                     </Grid>
                 </GroupBox>
